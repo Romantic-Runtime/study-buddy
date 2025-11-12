@@ -44,13 +44,19 @@ const PORT = process.env.PORT || 3000;
 
 // Use /tmp for uploads in serverless environments (Netlify/Vercel)
 // Use local uploads directory in development
-const isServerless = process.env.NETLIFY || process.env.VERCEL;
+// Check if we're in AWS Lambda (Netlify Functions) or Vercel
+const isServerless = process.env.NETLIFY || process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.LAMBDA_TASK_ROOT;
 const uploadsDir = isServerless ? '/tmp/uploads' : path.join(__dirname, 'uploads');
 
 // Ensure uploads directory exists
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log(`Created uploads directory: ${uploadsDir}`);
+try {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+    console.log(`Created uploads directory: ${uploadsDir}`);
+  }
+} catch (error) {
+  console.error('Error creating uploads directory:', error);
+  // In serverless, /tmp should always be writable, so this shouldn't fail
 }
 
 // Make uploadsDir accessible globally
