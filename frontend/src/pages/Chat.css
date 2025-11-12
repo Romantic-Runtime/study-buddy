@@ -1,19 +1,24 @@
+* {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 .chat-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
   padding: 2rem;
+  padding-top: 140px; /* Account for fixed navbar */
 }
 
 .chat-container {
   max-width: 900px;
   margin: 0 auto;
   background: white;
-  border-radius: 24px;
+  border-radius: 84px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 4rem);
+  /* height: calc(100vh - 4rem); */
 }
 
 .chat-header {
@@ -27,7 +32,7 @@
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  font-family: 'Germania One', cursive;
+  font-family: 'Germania One', cursive; /* Keep special font for bold title */
 }
 
 .chat-subtitle {

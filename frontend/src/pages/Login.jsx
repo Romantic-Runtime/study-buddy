@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../features/authSlice';
 import axios from 'axios';
 import './Auth.css';
-import './Auth.css';
 
 const url = "http://localhost:3000";
 
@@ -53,16 +52,16 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2 className="auth-title">Welcome Back</h2>
+        <h2 className="auth-title">Login</h2>
         
         {error && <div className="error-message">{error}</div>}
         
         <form className="auth-form" onSubmit={handleClick}>
           <div className="form-group">
-            <label className="form-label">Email Address</label>
+            <span className="form-icon">✉️</span>
             <input 
               type="email" 
-              placeholder="Enter your email"
+              placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -71,7 +70,7 @@ const Login = () => {
           </div>
           
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <span className="form-icon">🔒</span>
             <input 
               type="password" 
               placeholder="Enter your password"
@@ -98,7 +97,7 @@ const Login = () => {
         </form>
         
         <p className="auth-link">
-          Don't have an account? <Link to="/register">Sign up here</Link>
+          Don't have an account? <Link to="/register">Register Here</Link>
         </p>
       </div>
     </div>

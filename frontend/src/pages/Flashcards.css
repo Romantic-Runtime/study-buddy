@@ -1,7 +1,12 @@
+* {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 .flashcards-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 2rem;
+  padding-top: 140px; /* Account for fixed navbar */
 }
 
 .flashcards-container {
@@ -16,7 +21,7 @@
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  font-family: 'Germania One', cursive;
+  font-family: 'Germania One', cursive; /* Keep special font for bold title */
 }
 
 .flashcards-subtitle {

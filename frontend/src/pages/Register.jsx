@@ -49,13 +49,13 @@ const Register = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2 className="auth-title">Create Account</h2>
+        <h2 className="auth-title">Register</h2>
         
         {error && <div className="error-message">{error}</div>}
         
         <form className="auth-form" onSubmit={handleClick}>
           <div className="form-group">
-            <label className="form-label">Username</label>
+            <span className="form-icon">👤</span>
             <input 
               type="text" 
               placeholder="Enter your username"
@@ -67,10 +67,10 @@ const Register = () => {
           </div>
           
           <div className="form-group">
-            <label className="form-label">Email Address</label>
+            <span className="form-icon">✉️</span>
             <input 
               type="email" 
-              placeholder="Enter your email"
+              placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -79,10 +79,10 @@ const Register = () => {
           </div>
           
           <div className="form-group">
-            <label className="form-label">Password</label>
+            <span className="form-icon">🔒</span>
             <input 
               type="password" 
-              placeholder="Create a password (min 6 characters)"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -107,7 +107,7 @@ const Register = () => {
         </form>
 
         <p className="auth-link">
-          Already have an account? <Link to="/login">Login here</Link>
+          Already registered ? <Link to="/login">Login Here</Link>
         </p>
       </div>
     </div>

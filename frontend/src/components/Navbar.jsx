@@ -16,15 +16,20 @@ const Navbar = () => {
 
   return (
     <nav style={{
-      background: 'rgba(255, 255, 255, 0.25)',
-      backdropFilter: 'blur(10px)',
-      WebkitBackdropFilter: 'blur(10px)',
-      borderRadius: '50px',
-      padding: '1rem 3rem',
-      margin: '1rem auto',
-      maxWidth: '90%',
-      border: '1px solid rgba(255, 255, 255, 0.18)',
-      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
+      background: 'rgba(255, 255, 255, 0.15)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      borderRadius: '80px',
+      padding: '1rem 2rem',
+      margin: '1.5rem auto',
+      maxWidth: '92%',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1)',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000
     }}>
       <div style={{
         display: 'flex',
@@ -34,9 +39,9 @@ const Navbar = () => {
       }}>
         {/* Logo/Brand */}
         <Link to="/" style={{
-          fontSize: '2rem',
+          fontSize: '1.8rem',
           fontWeight: 'bold',
-          color: '#333',
+          color: 'rgba(0, 0, 0, 0.8)',
           textDecoration: 'none',
           fontFamily: '"Germania One", cursive'
         }}>
@@ -47,44 +52,44 @@ const Navbar = () => {
         {isAuthenticated && (
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
             <Link to="/quiz" style={{
-              color: '#333',
+              color: 'rgba(0, 0, 0, 0.8)',
               textDecoration: 'none',
-              fontSize: '1rem',
+              fontSize: '0.9rem',
               fontWeight: '500',
               transition: 'color 0.3s',
-              fontFamily: '"Germania One", cursive'
+              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
             }}>
-              📝 Quizzes
+              Quizzes
             </Link>
             <Link to="/flashcards" style={{
-              color: '#333',
+              color: 'rgba(0, 0, 0, 0.8)',
               textDecoration: 'none',
-              fontSize: '1rem',
+              fontSize: '0.9rem',
               fontWeight: '500',
               transition: 'color 0.3s',
-              fontFamily: '"Germania One", cursive'
+              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
             }}>
-              📚 Flashcards
+              Flashcards
             </Link>
             <Link to="/planner" style={{
-              color: '#333',
+              color: 'rgba(0, 0, 0, 0.8)',
               textDecoration: 'none',
-              fontSize: '1rem',
+              fontSize: '0.9rem',
               fontWeight: '500',
               transition: 'color 0.3s',
-              fontFamily: '"Germania One", cursive'
+              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
             }}>
-              📅 Planner
+              Planner
             </Link>
             <Link to="/chat" style={{
-              color: '#333',
+              color: 'rgba(0, 0, 0, 0.8)',
               textDecoration: 'none',
-              fontSize: '1rem',
+              fontSize: '0.9rem',
               fontWeight: '500',
               transition: 'color 0.3s',
-              fontFamily: '"Germania One", cursive'
+              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
             }}>
-              💬 AI Chat
+              AI Chat
             </Link>
           </div>
         )}
@@ -94,10 +99,10 @@ const Navbar = () => {
           {isAuthenticated && user ? (
             <>
               <span style={{
-                color: '#333',
-                fontSize: '1rem',
-                fontWeight: '500',
-                fontFamily: '"Germania One", cursive'
+                color: 'rgba(0, 0, 0, 0.8)',
+                fontSize: '0.9rem',
+                fontWeight: '400',
+                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
               }}>
                 Welcome, {user.username || user.email}
               </span>
@@ -133,39 +138,39 @@ const Navbar = () => {
           ) : (
             <>
               <Link to="/login" style={{
-                color: '#333',
+                color: 'rgba(0, 0, 0, 0.8)',
                 textDecoration: 'none',
-                fontSize: '1rem',
+                fontSize: '0.9rem',
                 fontWeight: '500',
                 transition: 'color 0.3s',
-                fontFamily: '"Germania One", cursive'
+                fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
               }}>
                 Sign In
               </Link>
               
               <Link to="/register">
                 <button style={{
-                  background: 'rgba(45, 55, 72, 0.8)',
+                  background: 'rgba(139, 92, 246, 0.8)',
                   backdropFilter: 'blur(5px)',
                   WebkitBackdropFilter: 'blur(5px)',
                   color: '#fff',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   padding: '0.75rem 1.5rem',
                   borderRadius: '25px',
                   cursor: 'pointer',
-                  fontSize: '1rem',
+                  fontSize: '0.9rem',
                   fontWeight: '600',
                   transition: 'all 0.3s ease',
-                  boxShadow: '0 4px 15px 0 rgba(31, 38, 135, 0.2)',
+                  boxShadow: '0 4px 15px 0 rgba(139, 92, 246, 0.3)',
                   fontFamily: '"Germania One", cursive'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 6px 20px 0 rgba(45, 55, 72, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px 0 rgba(139, 92, 246, 0.5)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 15px 0 rgba(31, 38, 135, 0.2)';
+                  e.currentTarget.style.boxShadow = '0 4px 15px 0 rgba(139, 92, 246, 0.3)';
                 }}
                 >
                   Get started

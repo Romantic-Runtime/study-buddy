@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUser, selectToken } from "../features/authSlice";
+import { selectToken } from "../features/authSlice";
 import "./Home.css";
 
 const Home = () => {
@@ -13,11 +13,7 @@ const Home = () => {
   const [quizLoading, setQuizLoading] = useState(false);
   const [numQuestions, setNumQuestions] = useState(5);
   const [difficulty, setDifficulty] = useState('medium');
-  const [myQuizzes, setMyQuizzes] = useState([]);
-  const [showMyQuizzes, setShowMyQuizzes] = useState(false);
-  const [loadingMyQuizzes, setLoadingMyQuizzes] = useState(false);
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
   const token = useSelector(selectToken);
 
   const handleSubmit = async (selectedFile) => {
@@ -108,35 +104,6 @@ const Home = () => {
     }
   };
 
-  const handleViewMyQuizzes = async () => {
-    if (!token) {
-      setError('Please login to view your quizzes');
-      navigate('/login');
-      return;
-    }
-
-    setLoadingMyQuizzes(true);
-    setError(null);
-
-    try {
-      const response = await axios.get('http://localhost:3000/api/quiz/my-quizzes', {
-        withCredentials: true
-      });
-
-      if (response.data.success) {
-        setMyQuizzes(response.data.data);
-        setShowMyQuizzes(true);
-      } else {
-        setError(response.data.message || 'Failed to fetch your quizzes');
-      }
-    } catch (err) {
-      console.error('Error fetching my quizzes:', err);
-      const errorMsg = err.response?.data?.message || err.message || 'Error fetching your quizzes.';
-      setError(errorMsg);
-    } finally {
-      setLoadingMyQuizzes(false);
-    }
-  };
 
   return (
     <div className="home-container">
@@ -150,6 +117,29 @@ const Home = () => {
             Study Buddy
           </h1>
 
+          {/* Bento Grid */}
+          <div className="bento-grid">
+            {/* Large Card - AI Quiz Generation */}
+            <div className="bento-card bento-card-large" onClick={() => navigate('/quiz')}>
+              <h3>AI Quiz Generation</h3>
+              <p>Upload your documents and let our AI create personalized quizzes to test your knowledge and strengthen your understanding.</p>
+              <button className="bento-button">Generate Quiz</button>
+            </div>
+
+            {/* Small Card 1 - Flashcards */}
+            <div className="bento-card bento-card-small" onClick={() => navigate('/flashcards')}>
+              <h3>Smart Flashcards</h3>
+              <p>Create and review flashcards for effective memorization.</p>
+              <button className="bento-button">Study Cards</button>
+            </div>
+
+            {/* Small Card 2 - Study Planner */}
+            <div className="bento-card bento-card-small" onClick={() => navigate('/planner')}>
+              <h3>Study Planner</h3>
+              <p>Organize your study schedule and track your progress.</p>
+              <button className="bento-button">Plan Study</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -349,94 +339,6 @@ const Home = () => {
 
       {/* Footer Gradient */}
       <section className="footer-gradient"></section>
-
-      {/* My Quizzes Modal */}
-      {showMyQuizzes && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0,0,0,0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '1rem',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: 'white',
-            borderRadius: '20px',
-            padding: '2rem',
-            maxWidth: '600px',
-            width: '100%',
-            maxHeight: '80vh',
-            overflow: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h2>My Quizzes ({myQuizzes.length})</h2>
-              <button
-                onClick={() => setShowMyQuizzes(false)}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: '#f44336',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
-              >
-                Close
-              </button>
-            </div>
-            
-            {myQuizzes.length === 0 ? (
-              <p style={{ textAlign: 'center', color: '#666', padding: '2rem' }}>
-                You haven't created any quizzes yet. Upload a PDF and generate your first quiz!
-              </p>
-            ) : (
-              <div style={{ display: 'grid', gap: '1rem' }}>
-                {myQuizzes.map((quiz) => (
-                  <div 
-                    key={quiz._id}
-                    style={{
-                      padding: '1.5rem',
-                      backgroundColor: '#f9f9f9',
-                      borderRadius: '12px',
-                      border: '1px solid #e0e0e0',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
-                    onClick={() => {
-                      setShowMyQuizzes(false);
-                      navigate('/quiz', { state: { quizId: quiz._id } });
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    <h3 style={{ marginBottom: '0.5rem', color: '#333' }}>{quiz.title}</h3>
-                    <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.75rem' }}>
-                      {quiz.description}
-                    </p>
-                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', color: '#888' }}>
-                      <span>📝 {quiz.totalQuestions} questions</span>
-                      <span>📅 {new Date(quiz.createdAt).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

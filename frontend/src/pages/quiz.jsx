@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectUser, selectIsAuthenticated } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Quiz.css';
 
 const Quiz = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -100,8 +101,10 @@ const Quiz = () => {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '50px' }}>
-        <h2>Loading quizzes...</h2>
+      <div className="quiz-page">
+        <div className="quiz-container" style={{ textAlign: 'center' }}>
+          <h2 className="quiz-title">Loading quizzes...</h2>
+        </div>
       </div>
     );
   }
@@ -453,9 +456,9 @@ const Quiz = () => {
   }
 
   return (
-    <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '30px' }}>
-        <h1>My Quizzes</h1>
+    <div className="quiz-page">
+      <div className="quiz-container">
+        <h1 className="quiz-title">My Quizzes</h1>
         <p style={{ color: '#666' }}>
           Welcome back, {user?.username || user?.email}! Here are all your generated quizzes.
         </p>
