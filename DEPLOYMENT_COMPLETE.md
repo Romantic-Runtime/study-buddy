@@ -246,6 +246,15 @@ netlify deploy --prod --dir=dist
 
 ## 🐛 Known Considerations
 
+### Environment Variables
+- **IMPORTANT**: The `.env` file is for local development only
+- For production, update `frontend/.env` locally to:
+  ```
+  VITE_API_URL=https://study-buddy-api-backend.netlify.app
+  ```
+- Then rebuild and redeploy: `npm run build && netlify deploy --prod --dir=dist`
+- Netlify environment variables are set separately via CLI or dashboard
+
 ### Function Timeout
 - Netlify free tier: 10-second timeout
 - PDF processing may timeout for large files (>10MB)
