@@ -112,7 +112,7 @@ const Flashcards = () => {
   return (
     <div className="flashcards-page">
       <div className="flashcards-container">
-        <h1 className="flashcards-title">📚 Flashcard Generator</h1>
+        <h1 className="flashcards-title">Flashcard Generator</h1>
         <p className="flashcards-subtitle">Generate interactive flashcards for quick revision</p>
 
         {error && (
@@ -130,7 +130,7 @@ const Flashcards = () => {
             id="flashcard-file-input"
           />
           <label htmlFor="flashcard-file-input" className="upload-button">
-            {generating ? '⏳ Generating Flashcards...' : '📤 Upload PDF to Generate Flashcards'}
+            {generating ? 'Generating Flashcards...' : 'Upload PDF to Generate Flashcards'}
           </label>
         </div>
 
@@ -146,12 +146,12 @@ const Flashcards = () => {
                 <div className="flashcard-front">
                   <div className="card-label">Question</div>
                   <p className="card-content">{currentCard.question}</p>
-                  <div className="flip-hint">👆 Click to flip</div>
+                  <div className="flip-hint">Click to flip</div>
                 </div>
                 <div className="flashcard-back">
                   <div className="card-label">Answer</div>
                   <p className="card-content">{currentCard.answer}</p>
-                  <div className="flip-hint">👆 Click to flip back</div>
+                  <div className="flip-hint">Click to flip back</div>
                 </div>
               </div>
             </div>

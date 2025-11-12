@@ -459,62 +459,78 @@ const Quiz = () => {
     <div className="quiz-page">
       <div className="quiz-container">
         <h1 className="quiz-title">My Quizzes</h1>
-        <p style={{ color: '#666' }}>
+        <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '1.1rem', fontWeight: '300' }}>
           Welcome back, {user?.username || user?.email}! Here are all your generated quizzes.
         </p>
       </div>
 
       {error && (
-        <div style={{ 
-          backgroundColor: '#ffebee', 
-          color: '#c62828', 
-          padding: '15px', 
-          borderRadius: '5px',
-          marginBottom: '20px'
-        }}>
-          {error}
+        <div className="quiz-container">
+          <div style={{ 
+            backgroundColor: 'rgba(239, 68, 68, 0.2)', 
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            color: 'white', 
+            padding: '1rem 1.5rem', 
+            borderRadius: '12px',
+            marginBottom: '1.5rem',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+            boxShadow: '0 4px 15px rgba(239, 68, 68, 0.2)',
+            textAlign: 'center',
+            fontWeight: '500'
+          }}>
+            {error}
+          </div>
         </div>
       )}
 
       {quizzes.length === 0 ? (
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '50px',
-          backgroundColor: 'white',
-          borderRadius: '10px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-        }}>
-          <h2>No quizzes yet</h2>
-          <p style={{ color: '#666', marginTop: '10px' }}>
-            Upload a PDF on the home page to generate your first quiz!
-          </p>
-          <button 
-            onClick={() => navigate('/')}
-            style={{
-              marginTop: '20px',
-              padding: '12px 30px',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
-          >
-            Go to Home
-          </button>
+        <div className="quiz-container">
+          <div className="quiz-card" style={{ 
+            textAlign: 'center', 
+            padding: '3rem 2rem',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderRadius: '24px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}>
+            <h2 style={{ color: 'white', fontSize: '1.8rem', fontWeight: '600', marginBottom: '1rem' }}>No quizzes yet</h2>
+            <p style={{ color: 'rgba(255, 255, 255, 0.85)', marginBottom: '2rem', fontSize: '1.1rem', fontWeight: '300' }}>
+              Upload a PDF on the home page to generate your first quiz!
+            </p>
+            <button 
+              onClick={() => navigate('/')}
+              className="quiz-button quiz-button-primary"
+              style={{
+                marginTop: '0',
+                padding: '1rem 2rem',
+                fontSize: '1rem',
+                fontWeight: '500',
+                borderRadius: '50px',
+                cursor: 'pointer'
+              }}
+            >
+              Go to Home
+            </button>
+          </div>
         </div>
       ) : (
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '20px'
-        }}>
-          {quizzes.map((quiz) => (
-            <div 
-              key={quiz._id} 
-              style={{ 
-                backgroundColor: 'white',
+        <div className="quiz-container">
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+            gap: '1.5rem'
+          }}>
+            {quizzes.map((quiz) => (
+              <div 
+                key={quiz._id} 
+                className="quiz-card"
+                style={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(15px)',
+                  WebkitBackdropFilter: 'blur(15px)',
                 padding: '20px',
                 borderRadius: '10px',
                 boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
@@ -524,10 +540,10 @@ const Quiz = () => {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
             >
-              <h3 style={{ marginBottom: '10px', color: '#2c3e50' }}>
+              <h3 style={{ marginBottom: '1rem', color: 'white', fontSize: '1.3rem', fontWeight: '600' }}>
                 {quiz.title}
               </h3>
-              <p style={{ color: '#666', fontSize: '14px', marginBottom: '15px' }}>
+              <p style={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '0.95rem', marginBottom: '1.5rem', lineHeight: '1.5', fontWeight: '300' }}>
                 {quiz.description}
               </p>
               <div style={{ 
@@ -536,47 +552,48 @@ const Quiz = () => {
                 alignItems: 'center',
                 marginBottom: '15px'
               }}>
-                <span style={{ fontSize: '14px', color: '#666' }}>
-                  <strong>{quiz.totalQuestions}</strong> Questions
+                <span style={{ fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.9)', fontWeight: '500' }}>
+                  <strong style={{ color: 'white' }}>{quiz.totalQuestions}</strong> Questions
                 </span>
-                <span style={{ fontSize: '12px', color: '#999' }}>
+                <span style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.7)', fontWeight: '300' }}>
                   {new Date(quiz.createdAt).toLocaleDateString()}
                 </span>
               </div>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button 
-                  onClick={() => handleStartQuiz(quiz)}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    backgroundColor: '#28a745',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontWeight: '500'
-                  }}
-                >
-                  Start Quiz
-                </button>
-                <button 
-                  onClick={() => handleViewQuiz(quiz)}
-                  style={{
-                    flex: 1,
-                    padding: '10px',
-                    backgroundColor: '#3498db',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontWeight: '500'
-                  }}
-                >
-                  View Answers
-                </button>
-              </div>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button 
+                onClick={() => handleStartQuiz(quiz)}
+                className="quiz-button quiz-button-primary"
+                style={{
+                  flex: 1,
+                  padding: '0.8rem 1rem',
+                  fontSize: '0.85rem',
+                  fontWeight: '500',
+                  borderRadius: '50px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.02em'
+                }}
+              >
+                Take Quiz
+              </button>
+              <button 
+                onClick={() => handleViewQuiz(quiz)}
+                className="quiz-button"
+                style={{
+                  flex: 1,
+                  padding: '0.8rem 1rem',
+                  fontSize: '0.85rem',
+                  fontWeight: '500',
+                  borderRadius: '50px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.02em'
+                }}
+              >
+                View Answers
+              </button>
             </div>
+          </div>
           ))}
+          </div>
         </div>
       )}
     </div>
