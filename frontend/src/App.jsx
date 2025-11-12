@@ -5,6 +5,10 @@ import Home from "./pages/Home";
 import Quiz from "./pages/quiz";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Flashcards from "./pages/Flashcards";
+import Planner from "./pages/Planner";
+import Chat from "./pages/Chat";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function AppContent() {
   const location = useLocation();
@@ -17,7 +21,26 @@ function AppContent() {
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz" element={
+            <ProtectedRoute>
+              <Quiz />
+            </ProtectedRoute>
+          } />
+          <Route path="/flashcards" element={
+            <ProtectedRoute>
+              <Flashcards />
+            </ProtectedRoute>
+          } />
+          <Route path="/planner" element={
+            <ProtectedRoute>
+              <Planner />
+            </ProtectedRoute>
+          } />
+          <Route path="/chat" element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          } />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>

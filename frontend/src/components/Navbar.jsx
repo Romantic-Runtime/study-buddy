@@ -43,6 +43,52 @@ const Navbar = () => {
           Study Buddy
         </Link>
 
+        {/* Navigation Links */}
+        {isAuthenticated && (
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+            <Link to="/quiz" style={{
+              color: '#333',
+              textDecoration: 'none',
+              fontSize: '1rem',
+              fontWeight: '500',
+              transition: 'color 0.3s',
+              fontFamily: '"Germania One", cursive'
+            }}>
+              📝 Quizzes
+            </Link>
+            <Link to="/flashcards" style={{
+              color: '#333',
+              textDecoration: 'none',
+              fontSize: '1rem',
+              fontWeight: '500',
+              transition: 'color 0.3s',
+              fontFamily: '"Germania One", cursive'
+            }}>
+              📚 Flashcards
+            </Link>
+            <Link to="/planner" style={{
+              color: '#333',
+              textDecoration: 'none',
+              fontSize: '1rem',
+              fontWeight: '500',
+              transition: 'color 0.3s',
+              fontFamily: '"Germania One", cursive'
+            }}>
+              📅 Planner
+            </Link>
+            <Link to="/chat" style={{
+              color: '#333',
+              textDecoration: 'none',
+              fontSize: '1rem',
+              fontWeight: '500',
+              transition: 'color 0.3s',
+              fontFamily: '"Germania One", cursive'
+            }}>
+              💬 AI Chat
+            </Link>
+          </div>
+        )}
+
         {/* Auth Buttons / User Info */}
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           {isAuthenticated && user ? (

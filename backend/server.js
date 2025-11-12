@@ -8,6 +8,9 @@ const { dbConnect } = require('./config/database');
 const pdfRoutes = require('./routes/pdfRoutes');
 const quizRoutes = require('./routes/quizRoutes');
 const authRoutes = require('./routes/authRoute');
+const flashcardRoutes = require('./routes/flashcardRoutes');
+const plannerRoutes = require('./routes/plannerRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 const path = require('path');
 const app = express();
 
@@ -33,6 +36,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/pdf', pdfRoutes);
 app.use('/api/quiz', quizRoutes);
+app.use('/api/flashcard', flashcardRoutes);
+app.use('/api/planner', plannerRoutes);
+app.use('/api/chat', chatRoutes);
 
 
 dbConnect();
