@@ -42,14 +42,21 @@ if (process.env.NODE_ENV !== 'production') {
 
 const PORT = process.env.PORT || 3000;
 
+// Use /tmp for uploads in serverless environments (Netlify/Vercel)
+// Use local uploads directory in development
+const isServerless = process.env.NETLIFY || process.env.VERCEL;
+const uploadsDir = isServerless ? '/tmp/uploads' : path.join(__dirname, 'uploads');
+
 // Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
-  console.log('Created uploads directory');
+  console.log(`Created uploads directory: ${uploadsDir}`);
 }
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Make uploadsDir accessible globally
+global.uploadsDir = uploadsDir;
+
+app.use('/uploads', express.static(uploadsDir));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

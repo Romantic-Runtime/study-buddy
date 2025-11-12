@@ -282,6 +282,14 @@ npm install serverless-http
 
 ## Troubleshooting
 
+### Issue: ENOENT: no such file or directory, mkdir '/var/task/uploads'
+**Cause**: Netlify Functions run in a read-only filesystem (except /tmp)
+**Solution**: 
+✅ Already fixed! The code now automatically uses `/tmp/uploads` in serverless environments.
+- The `server.js` detects Netlify/Vercel environment
+- Automatically uses `/tmp` directory for file uploads
+- Works seamlessly without configuration changes
+
 ### Issue: 502 Bad Gateway or Function Timeout
 **Cause**: Netlify functions have 10-second timeout on free tier
 **Solutions**:

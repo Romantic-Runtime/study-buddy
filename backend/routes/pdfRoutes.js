@@ -3,8 +3,12 @@ const router = express.Router();
 const multer = require("multer");
 const { extractPdf, getData } = require("../controllers/pdf.controller");
 
+// Use global uploadsDir set in server.js (handles serverless vs local)
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/"),
+  destination: (req, file, cb) => {
+    const uploadsPath = global.uploadsDir || "uploads/";
+    cb(null, uploadsPath);
+  },
   filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
 });
 
