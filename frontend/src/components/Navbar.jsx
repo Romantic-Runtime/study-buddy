@@ -16,102 +16,116 @@ const Navbar = () => {
 
   return (
     <nav style={{
-      backgroundColor: '#2c3e50',
-      padding: '1rem 2rem',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      background: 'rgba(255, 255, 255, 0.25)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      borderRadius: '50px',
+      padding: '1rem 3rem',
+      margin: '1rem auto',
+      maxWidth: '90%',
+      border: '1px solid rgba(255, 255, 255, 0.18)',
+      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
     }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        maxWidth: '1200px',
-        margin: '0 auto'
+        width: '100%'
       }}>
         {/* Logo/Brand */}
         <Link to="/" style={{
-          fontSize: '1.5rem',
+          fontSize: '2rem',
           fontWeight: 'bold',
-          color: '#fff',
-          textDecoration: 'none'
+          color: '#333',
+          textDecoration: 'none',
+          fontFamily: '"Germania One", cursive'
         }}>
-          PDF Quiz App
+          Study Buddy
         </Link>
 
-        {/* Nav Links */}
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <Link to="/" style={{
-            color: '#fff',
-            textDecoration: 'none',
-            fontSize: '1rem',
-            transition: 'color 0.3s'
-          }}>
-            Home
-          </Link>
-
-          {isAuthenticated && (
-            <Link to="/quiz" style={{
-              color: '#fff',
-              textDecoration: 'none',
-              fontSize: '1rem',
-              transition: 'color 0.3s'
-            }}>
-              My Quizzes
-            </Link>
-          )}
-
-          {/* Auth Buttons */}
-          {isAuthenticated ? (
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <span style={{ color: '#fff', fontSize: '0.9rem' }}>
-                👤 {user?.username || user?.email}
+        {/* Auth Buttons / User Info */}
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          {isAuthenticated && user ? (
+            <>
+              <span style={{
+                color: '#333',
+                fontSize: '1rem',
+                fontWeight: '500',
+                fontFamily: '"Germania One", cursive'
+              }}>
+                Welcome, {user.username || user.email}
               </span>
-              <button
+              <button 
                 onClick={handleLogout}
                 style={{
-                  backgroundColor: '#e74c3c',
+                  background: 'rgba(220, 38, 38, 0.8)',
+                  backdropFilter: 'blur(5px)',
+                  WebkitBackdropFilter: 'blur(5px)',
                   color: '#fff',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '25px',
                   cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  fontWeight: '500'
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 15px 0 rgba(31, 38, 135, 0.2)',
+                  fontFamily: '"Germania One", cursive'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px 0 rgba(220, 38, 38, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 15px 0 rgba(31, 38, 135, 0.2)';
                 }}
               >
                 Logout
               </button>
-            </div>
+            </>
           ) : (
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <Link to="/login">
-                <button style={{
-                  backgroundColor: '#3498db',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  fontWeight: '500'
-                }}>
-                  Login
-                </button>
+            <>
+              <Link to="/login" style={{
+                color: '#333',
+                textDecoration: 'none',
+                fontSize: '1rem',
+                fontWeight: '500',
+                transition: 'color 0.3s',
+                fontFamily: '"Germania One", cursive'
+              }}>
+                Sign In
               </Link>
+              
               <Link to="/register">
                 <button style={{
-                  backgroundColor: '#2ecc71',
+                  background: 'rgba(45, 55, 72, 0.8)',
+                  backdropFilter: 'blur(5px)',
+                  WebkitBackdropFilter: 'blur(5px)',
                   color: '#fff',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '25px',
                   cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  fontWeight: '500'
-                }}>
-                  Register
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 15px 0 rgba(31, 38, 135, 0.2)',
+                  fontFamily: '"Germania One", cursive'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px 0 rgba(45, 55, 72, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 15px 0 rgba(31, 38, 135, 0.2)';
+                }}
+                >
+                  Get started
                 </button>
               </Link>
-            </div>
+            </>
           )}
         </div>
       </div>

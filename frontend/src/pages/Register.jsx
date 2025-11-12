@@ -31,9 +31,7 @@ const Register = () => {
       const response = await axios.post(`${url}/api/auth/register`, userDetails);
       
       if (response.data.success) {
-        // Registration successful, now login
-        alert('Registration successful! Please login.');
-        navigate('/login');
+        navigate('/');
       }
       
       setName("");
@@ -48,65 +46,172 @@ const Register = () => {
   }
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ddd', borderRadius: '8px' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Register</h2>
-      {error && <div style={{ color: 'red', marginBottom: '10px', padding: '10px', backgroundColor: '#ffebee', borderRadius: '4px' }}>{error}</div>}
-      
-      <form onSubmit={handleClick}>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Name:</label>
-          <input 
-            type="text" 
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '14px' }}
-          />
-        </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Email:</label>
-          <input 
-            type="email" 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '14px' }}
-          />
-        </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Password:</label>
-          <input 
-            type="password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength="6"
-            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '14px' }}
-          />
-        </div>
-        <button 
-          type="submit"
-          disabled={loading}
-          style={{ 
-            width: '100%', 
-            padding: '12px', 
-            backgroundColor: loading ? '#ccc' : '#2196F3',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            fontSize: '16px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
-            marginBottom: '15px'
-          }}
-        >
-          {loading ? 'Registering...' : 'Register'}
-        </button>
-      </form>
+    <div style={{ 
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      padding: '20px'
+    }}>
+      <div style={{ 
+        maxWidth: '450px',
+        width: '100%',
+        backgroundColor: '#f8e8f5',
+        borderRadius: '20px',
+        padding: '40px',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+      }}>
+        <h2 style={{ 
+          textAlign: 'center',
+          marginBottom: '30px',
+          fontSize: '32px',
+          fontWeight: 'bold',
+          color: '#333'
+        }}>
+          Register
+        </h2>
+        
+        {error && (
+          <div style={{ 
+            color: '#c62828',
+            marginBottom: '20px',
+            padding: '12px',
+            backgroundColor: '#ffebee',
+            borderRadius: '8px',
+            fontSize: '14px'
+          }}>
+            {error}
+          </div>
+        )}
+        
+        <form onSubmit={handleClick}>
+          <div style={{ marginBottom: '20px', position: 'relative' }}>
+            <input 
+              type="text" 
+              placeholder="Enter your username"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              style={{ 
+                width: '100%',
+                padding: '15px 15px 15px 45px',
+                border: 'none',
+                borderRadius: '25px',
+                fontSize: '14px',
+                backgroundColor: '#6b4c9a',
+                color: 'white',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
+            />
+            <span style={{
+              position: 'absolute',
+              left: '18px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: 'rgba(255,255,255,0.7)',
+              fontSize: '16px'
+            }}>
+              👤
+            </span>
+          </div>
+          
+          <div style={{ marginBottom: '20px', position: 'relative' }}>
+            <input 
+              type="email" 
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              style={{ 
+                width: '100%',
+                padding: '15px 15px 15px 45px',
+                border: 'none',
+                borderRadius: '25px',
+                fontSize: '14px',
+                backgroundColor: '#6b4c9a',
+                color: 'white',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
+            />
+            <span style={{
+              position: 'absolute',
+              left: '18px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: 'rgba(255,255,255,0.7)',
+              fontSize: '16px'
+            }}>
+              ✉️
+            </span>
+          </div>
+          
+          <div style={{ marginBottom: '25px', position: 'relative' }}>
+            <input 
+              type="password" 
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength="6"
+              style={{ 
+                width: '100%',
+                padding: '15px 15px 15px 45px',
+                border: 'none',
+                borderRadius: '25px',
+                fontSize: '14px',
+                backgroundColor: '#6b4c9a',
+                color: 'white',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
+            />
+            <span style={{
+              position: 'absolute',
+              left: '18px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: 'rgba(255,255,255,0.7)',
+              fontSize: '16px'
+            }}>
+              🔒
+            </span>
+          </div>
+          
+          <button 
+            type="submit"
+            disabled={loading}
+            style={{ 
+              width: '100%',
+              padding: '15px',
+              backgroundColor: loading ? '#555' : '#2c1a4d',
+              color: 'white',
+              border: 'none',
+              borderRadius: '25px',
+              fontSize: '16px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              fontWeight: 'bold',
+              marginBottom: '20px',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => !loading && (e.target.style.backgroundColor = '#1a0f2e')}
+            onMouseLeave={(e) => !loading && (e.target.style.backgroundColor = '#2c1a4d')}
+          >
+            {loading ? 'Signing Up...' : 'Sign Up'}
+          </button>
+        </form>
 
-      <p style={{ marginTop: '20px', textAlign: 'center' }}>
-        Already have an account? <Link to="/login" style={{ color: '#2196F3', textDecoration: 'none' }}>Login here</Link>
-      </p>
+        <p style={{ 
+          marginTop: '20px',
+          textAlign: 'center',
+          color: '#333',
+          fontSize: '14px'
+        }}>
+          Already registered? <Link to="/login" style={{ color: '#4a5ff7', textDecoration: 'none', fontWeight: 'bold' }}>Login Here</Link>
+        </p>
+      </div>
     </div>
   );
 };
