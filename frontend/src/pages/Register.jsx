@@ -29,9 +29,16 @@ const Register = () => {
         password: password,
       };
       
-      const response = await axios.post(`${url}/api/auth/register`, userDetails);
+      const response = await axios.post(`${url}/api/auth/register`, userDetails, {
+        withCredentials: true
+      });
       
       if (response.data.success) {
+        // Store token and user data in Redux for automatic login
+        dispatch(setToken(response.data.token));
+        dispatch(setUser(response.data.user));
+        
+        // Navigate to home page
         navigate('/');
       }
       

@@ -14,6 +14,7 @@ const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
+  const [quizStartTime, setQuizStartTime] = useState(null);
   
   const user = useSelector(selectUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -56,6 +57,7 @@ const Quiz = () => {
     setCurrentQuestion(0);
     setSelectedAnswers({});
     setShowResults(false);
+    setQuizStartTime(Date.now()); // Track when quiz started
   };
 
   const handleCloseQuiz = () => {
@@ -85,7 +87,27 @@ const Quiz = () => {
     }
   };
 
-  const handleSubmitQuiz = () => {
+  const handleSubmitQuiz = async () => {
+    const score = calculateScore();
+    const timeSpent = quizStartTime ? Math.round((Date.now() - quizStartTime) / 1000) : 0; // Time in seconds
+    
+    // Send quiz results to backend for analytics tracking
+    try {
+      await axios.post('http://localhost:3000/api/quiz/complete', {
+        quizId: selectedQuiz._id,
+        score: score,
+        totalQuestions: selectedQuiz.questions.length,
+        timeSpent: timeSpent,
+        selectedAnswers: selectedAnswers
+      }, {
+        withCredentials: true
+      });
+      console.log('Quiz results recorded in analytics');
+    } catch (error) {
+      console.error('Failed to record quiz analytics:', error);
+      // Don't block the user from seeing results even if analytics fails
+    }
+    
     setShowResults(true);
   };
 
@@ -462,6 +484,63 @@ const Quiz = () => {
         <p style={{ color: 'rgba(255, 255, 255, 0.8)', fontSize: '1.1rem', fontWeight: '300' }}>
           Welcome back, {user?.username || user?.email}! Here are all your generated quizzes.
         </p>
+        
+        {/* Upload Section for New Quiz Generation */}
+        <div className="upload-section" style={{ 
+          textAlign: 'center', 
+          margin: '2rem 0 3rem', 
+          padding: '2rem',
+          background: 'transparent'
+        }}>
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={(e) => {
+              // Handle file upload for quiz generation
+              const file = e.target.files[0];
+              if (file) {
+                console.log('PDF uploaded for quiz generation:', file);
+                // Navigate to home page for quiz generation
+                navigate('/', { state: { uploadedFile: file } });
+              }
+            }}
+            style={{ display: 'none' }}
+            id="quiz-file-input"
+          />
+          <label htmlFor="quiz-file-input" style={{
+            display: 'inline-block',
+            padding: '0.9rem 2rem',
+            background: 'rgba(255, 255, 255, 0.08)',
+            color: 'rgba(255, 255, 255, 0.9)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '12px',
+            fontWeight: '400',
+            fontSize: '0.95rem',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            textDecoration: 'none'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+            e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15)';
+            e.currentTarget.style.color = 'white';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)';
+          }}
+          >
+            Upload PDF to Generate New Quiz
+          </label>
+        </div>
       </div>
 
       {error && (

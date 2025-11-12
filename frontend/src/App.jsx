@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Flashcards from "./pages/Flashcards";
 import Planner from "./pages/Planner";
 import Chat from "./pages/Chat";
+import Analytics from "./pages/Analytics";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function AppContent() {
@@ -39,6 +40,11 @@ function AppContent() {
           <Route path="/chat" element={
             <ProtectedRoute>
               <Chat />
+            </ProtectedRoute>
+          } />
+          <Route path="/analytics" element={
+            <ProtectedRoute>
+              <Analytics />
             </ProtectedRoute>
           } />
           <Route path="/register" element={<Register />} />

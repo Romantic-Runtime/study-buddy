@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectUser, selectToken } from "../features/authSlice";
+import { selectToken } from "../features/authSlice";
 import axios from "axios";
 import "./Flashcards.css";
 
@@ -11,10 +11,11 @@ const Flashcards = () => {
   const [error, setError] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [file, setFile] = useState(null);
   const [generating, setGenerating] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState(null);
+  const [cardsReviewedCount, setCardsReviewedCount] = useState(0);
+  const [currentSetId, setCurrentSetId] = useState(null);
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
   const token = useSelector(selectToken);
 
   useEffect(() => {
@@ -22,6 +23,15 @@ const Flashcards = () => {
       fetchFlashcards();
     }
   }, [token]);
+
+  useEffect(() => {
+    // Start session when user starts viewing flashcards
+    if (flashcards.length > 0 && flashcards[0]._id && !sessionStartTime) {
+      setSessionStartTime(Date.now());
+      setCurrentSetId(flashcards[0]._id);
+      setCardsReviewedCount(0);
+    }
+  }, [flashcards, sessionStartTime]);
 
   const fetchFlashcards = async () => {
     setLoading(true);
@@ -49,7 +59,6 @@ const Flashcards = () => {
       return;
     }
 
-    setFile(selectedFile);
     setGenerating(true);
     setError(null);
 
@@ -97,6 +106,13 @@ const Flashcards = () => {
     if (flashcards.length > 0 && flashcards[0].cards) {
       setCurrentIndex((prev) => (prev + 1) % flashcards[0].cards.length);
       setIsFlipped(false);
+      setCardsReviewedCount(prev => prev + 1);
+      
+      // If user has reviewed at least 5 cards or completed the set, record session
+      const cardsCount = cardsReviewedCount + 1;
+      if (cardsCount >= 5 || (currentIndex + 1) >= flashcards[0].cards.length) {
+        recordFlashcardSession();
+      }
     }
   };
 
@@ -104,6 +120,29 @@ const Flashcards = () => {
     if (flashcards.length > 0 && flashcards[0].cards) {
       setCurrentIndex((prev) => (prev - 1 + flashcards[0].cards.length) % flashcards[0].cards.length);
       setIsFlipped(false);
+    }
+  };
+
+  const recordFlashcardSession = async () => {
+    if (!currentSetId || !sessionStartTime || cardsReviewedCount < 1) return;
+    
+    const timeSpent = Math.round((Date.now() - sessionStartTime) / 1000); // Time in seconds
+    
+    try {
+      await axios.post('http://localhost:3000/api/flashcard/complete', {
+        flashcardSetId: currentSetId,
+        cardsReviewed: cardsReviewedCount + 1, // Include current card
+        timeSpent: timeSpent
+      }, {
+        withCredentials: true
+      });
+      console.log('Flashcard session recorded in analytics');
+      
+      // Reset session tracking
+      setSessionStartTime(Date.now());
+      setCardsReviewedCount(0);
+    } catch (error) {
+      console.error('Failed to record flashcard session:', error);
     }
   };
 
@@ -178,7 +217,7 @@ const Flashcards = () => {
           <div className="flashcard-sets">
             <h2>Your Flashcard Sets</h2>
             <div className="sets-grid">
-              {flashcards.map((set, index) => (
+              {flashcards.map((set) => (
                 <div key={set._id} className="set-card">
                   <h3>{set.title}</h3>
                   <p>{set.cards?.length || 0} cards</p>

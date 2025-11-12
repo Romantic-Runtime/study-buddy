@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const Quiz = require("../models/quiz");
+const Analytics = require("../models/Analytics");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -173,4 +174,80 @@ const getMyQuizzes = async (req, res) => {
   }
 };
 
-module.exports = { generateQuiz, getAllQuizzes, getQuizById, getMyQuizzes };
+// Complete quiz and record analytics
+const completeQuiz = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { quizId, score, totalQuestions, timeSpent, selectedAnswers } = req.body;
+    
+    if (!quizId || score === undefined || !totalQuestions) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields (quizId, score, totalQuestions)"
+      });
+    }
+
+    // Verify quiz exists
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) {
+      return res.status(404).json({
+        success: false,
+        message: "Quiz not found"
+      });
+    }
+
+    // Find or create analytics for user
+    let analytics = await Analytics.findOne({ userId });
+    if (!analytics) {
+      analytics = new Analytics({ userId });
+    }
+
+    // Calculate percentage
+    const percentage = (score / totalQuestions) * 100;
+
+    // Record quiz attempt
+    analytics.quizAttempts.push({
+      quizId,
+      score,
+      totalQuestions,
+      percentage,
+      timeSpent: timeSpent || 0,
+      completedAt: new Date()
+    });
+
+    // Add study session for the quiz
+    analytics.studySessions.push({
+      activityType: 'quiz',
+      duration: Math.round((timeSpent || 0) / 60), // Convert seconds to minutes
+      date: new Date()
+    });
+
+    // Update stats and streak
+    analytics.updateStats();
+    await analytics.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Quiz completed and analytics recorded",
+      data: {
+        score,
+        totalQuestions,
+        percentage: Math.round(percentage),
+        analytics: {
+          totalQuizzesTaken: analytics.totalQuizzesTaken,
+          averageQuizScore: Math.round(analytics.averageQuizScore),
+          streak: analytics.streak.current
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Complete quiz error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to complete quiz",
+      error: error.message
+    });
+  }
+};
+
+module.exports = { generateQuiz, getAllQuizzes, getQuizById, getMyQuizzes, completeQuiz };

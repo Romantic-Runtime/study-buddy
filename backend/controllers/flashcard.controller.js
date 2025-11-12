@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const Flashcard = require("../models/Flashcard");
+const Analytics = require("../models/Analytics");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -121,4 +122,70 @@ const getMyFlashcards = async (req, res) => {
   }
 };
 
-module.exports = { generateFlashcards, getMyFlashcards };
+// Complete flashcard study session and record analytics
+const completeFlashcardSession = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { flashcardSetId, cardsReviewed, timeSpent } = req.body;
+    
+    if (!flashcardSetId || !cardsReviewed) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields (flashcardSetId, cardsReviewed)"
+      });
+    }
+
+    // Verify flashcard set exists
+    const flashcardSet = await Flashcard.findById(flashcardSetId);
+    if (!flashcardSet) {
+      return res.status(404).json({
+        success: false,
+        message: "Flashcard set not found"
+      });
+    }
+
+    // Find or create analytics for user
+    let analytics = await Analytics.findOne({ userId });
+    if (!analytics) {
+      analytics = new Analytics({ userId });
+    }
+
+    // Record flashcard study session
+    analytics.flashcardStudy.push({
+      flashcardSetId,
+      cardsReviewed,
+      timeSpent: timeSpent || 0,
+      studiedAt: new Date()
+    });
+
+    // Add study session
+    analytics.studySessions.push({
+      activityType: 'flashcard',
+      duration: Math.round((timeSpent || 0) / 60), // Convert seconds to minutes
+      date: new Date()
+    });
+
+    // Update stats and streak
+    analytics.updateStats();
+    await analytics.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Flashcard session recorded in analytics",
+      data: {
+        cardsReviewed,
+        totalFlashcardsReviewed: analytics.totalFlashcardsReviewed,
+        streak: analytics.streak.current
+      }
+    });
+  } catch (error) {
+    console.error("Complete flashcard session error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to record flashcard session",
+      error: error.message
+    });
+  }
+};
+
+module.exports = { generateFlashcards, getMyFlashcards, completeFlashcardSession };

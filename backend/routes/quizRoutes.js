@@ -5,10 +5,13 @@ const {
   generateQuiz, 
   getAllQuizzes, 
   getQuizById,
-  getMyQuizzes, 
+  getMyQuizzes,
+  completeQuiz 
 } = require("../controllers/quiz.controller");
 
 router.post("/generate", auth, generateQuiz);
+
+router.post("/complete", auth, completeQuiz);
 
 router.get("/", getAllQuizzes);
 

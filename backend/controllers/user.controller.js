@@ -29,11 +29,29 @@ const register = async (req, res) => {
     });
     await newUser.save();
     
-    console.log("User registered:", newUser.email);
+    // Generate JWT token for automatic login after registration
+    const payload = { 
+      userId: newUser._id, 
+      username: newUser.username,
+      email: newUser.email 
+    };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
+    
+    // Set HTTP-only cookie
+    res.cookie('token', token, { 
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production', 
+      maxAge: 86400000,
+      sameSite: 'lax'
+    });
+    
+    console.log("User registered and auto-logged in:", newUser.email);
     res.status(201).json({ 
       success: true,
       message: "User registered successfully.",
+      token: token,
       user: {
+        id: newUser._id,
         username: newUser.username,
         email: newUser.email
       }

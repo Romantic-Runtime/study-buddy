@@ -81,6 +81,16 @@ const Navbar = () => {
             }}>
               Planner
             </Link>
+            <Link to="/analytics" style={{
+              color: 'rgba(0, 0, 0, 0.8)',
+              textDecoration: 'none',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              transition: 'color 0.3s',
+              fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
+            }}>
+              Analytics
+            </Link>
             <Link to="/chat" style={{
               color: 'rgba(0, 0, 0, 0.8)',
               textDecoration: 'none',
