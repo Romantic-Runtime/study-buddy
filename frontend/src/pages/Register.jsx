@@ -3,9 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setToken, setUser } from "../features/authSlice";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import './Auth.css';
-
-const url = "http://localhost:3000";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -29,7 +28,7 @@ const Register = () => {
         password: password,
       };
       
-      const response = await axios.post(`${url}/api/auth/register`, userDetails, {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userDetails, {
         withCredentials: true
       });
       

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectUser, selectIsAuthenticated } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 import './Quiz.css';
 
 const Quiz = () => {
@@ -31,7 +32,7 @@ const Quiz = () => {
   const fetchQuizzes = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/quiz');
+      const response = await axios.get(`${API_BASE_URL}/api/quiz`);
       
       if (response.data.success) {
         setQuizzes(response.data.data);
@@ -93,7 +94,7 @@ const Quiz = () => {
     
     // Send quiz results to backend for analytics tracking
     try {
-      await axios.post('http://localhost:3000/api/quiz/complete', {
+      await axios.post(`${API_BASE_URL}/api/quiz/complete`, {
         quizId: selectedQuiz._id,
         score: score,
         totalQuestions: selectedQuiz.questions.length,

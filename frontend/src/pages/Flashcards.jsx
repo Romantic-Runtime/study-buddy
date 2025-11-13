@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectToken } from "../features/authSlice";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import "./Flashcards.css";
 
 const Flashcards = () => {
@@ -36,7 +37,7 @@ const Flashcards = () => {
   const fetchFlashcards = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3000/api/flashcard/my-flashcards', {
+      const response = await axios.get(`${API_BASE_URL}/api/flashcard/my-flashcards`, {
         withCredentials: true
       });
       if (response.data.success) {
@@ -67,7 +68,7 @@ const Flashcards = () => {
       formData.append("file", selectedFile);
 
       const uploadResponse = await axios.post(
-        "http://localhost:3000/api/pdf/getData",
+        `${API_BASE_URL}/api/pdf/getData`,
         formData,
         {
           headers: {
@@ -78,7 +79,7 @@ const Flashcards = () => {
 
       if (uploadResponse.data.success) {
         const flashcardResponse = await axios.post(
-          'http://localhost:3000/api/flashcard/generate',
+          `${API_BASE_URL}/api/flashcard/generate`,
           {
             text: uploadResponse.data.data.text,
             title: `Flashcards from ${selectedFile.name}`
@@ -129,7 +130,7 @@ const Flashcards = () => {
     const timeSpent = Math.round((Date.now() - sessionStartTime) / 1000); // Time in seconds
     
     try {
-      await axios.post('http://localhost:3000/api/flashcard/complete', {
+      await axios.post(`${API_BASE_URL}/api/flashcard/complete`, {
         flashcardSetId: currentSetId,
         cardsReviewed: cardsReviewedCount + 1, // Include current card
         timeSpent: timeSpent

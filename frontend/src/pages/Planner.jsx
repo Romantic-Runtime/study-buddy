@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUser, selectToken } from "../features/authSlice";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 import "./Planner.css";
 
 const Planner = () => {
@@ -28,7 +29,7 @@ const Planner = () => {
   const fetchSchedule = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3000/api/planner/schedule', {
+      const response = await axios.get(`${API_BASE_URL}/api/planner/schedule`, {
         withCredentials: true
       });
       if (response.data.success) {
@@ -45,7 +46,7 @@ const Planner = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/planner/add-topic',
+        `${API_BASE_URL}/api/planner/add-topic`,
         newTopic,
         { withCredentials: true }
       );
@@ -70,7 +71,7 @@ const Planner = () => {
   const markAsComplete = async (topicId) => {
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/planner/complete/${topicId}`,
+        `${API_BASE_URL}/api/planner/complete/${topicId}`,
         {},
         { withCredentials: true }
       );
