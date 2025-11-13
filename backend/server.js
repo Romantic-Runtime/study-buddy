@@ -101,8 +101,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Database connection
-dbConnect();
+// Database connection (only in non-serverless environment)
+const isServerlessFunction = process.env.NETLIFY || process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
+if (!isServerlessFunction) {
+  // In regular server mode, connect to database at startup
+  dbConnect();
+}
+// In serverless mode, connection is handled per-request in the function wrapper
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
