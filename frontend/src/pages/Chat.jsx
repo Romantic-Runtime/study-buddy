@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectUser, selectToken } from "../features/authSlice";
-import axios from "axios";
-import API_BASE_URL from "../config/api";
+import axiosInstance from "../axiosInstance";
 import "./Chat.css";
 
 const Chat = () => {
@@ -28,8 +27,7 @@ const Chat = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const response = await axios.post(
-        `${API_BASE_URL}/api/pdf/getData`,
+      const response = await axiosInstance.post(\'/api/pdf/getData\',
         formData,
         {
           headers: {
@@ -64,13 +62,11 @@ const Chat = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/chat/ask`,
+      const response = await axiosInstance.post(\'/api/chat/ask\',
         {
           question: userMessage,
           context: uploadedContext
-        },
-        { withCredentials: true }
+        }
       );
 
       if (response.data.success) {

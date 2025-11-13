@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import API_BASE_URL from "../config/api";
+import axiosInstance from "../axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectToken } from "../features/authSlice";
@@ -33,8 +32,7 @@ const Home = () => {
       formData.append("file", fileToUpload);
 
       console.log("Uploading file:", fileToUpload.name);
-      const response = await axios.post(
-        `${API_BASE_URL}/api/pdf/getData`,
+      const response = await axiosInstance.post(\'/api/pdf/getData\',
         formData,
         {
           headers: {
@@ -79,13 +77,11 @@ const Home = () => {
 
     try {
       console.log('Generating quiz...');
-      const response = await axios.post(`${API_BASE_URL}/api/quiz/generate`, {
+      const response = await axiosInstance.post(\'/api/quiz/generate\', {
         text: result.text,
         numQuestions: parseInt(numQuestions),
         difficulty: difficulty,
         title: `Quiz from ${file?.name || 'PDF'}`
-      }, {
-        withCredentials: true
       });
 
       console.log('Quiz Response:', response.data);

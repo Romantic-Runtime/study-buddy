@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser, selectIsAuthenticated } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import API_BASE_URL from '../config/api';
+import axiosInstance from "../axiosInstance";
 import './Quiz.css';
 
 const Quiz = () => {
@@ -32,7 +31,7 @@ const Quiz = () => {
   const fetchQuizzes = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/api/quiz`);
+      const response = await axiosInstance.get(\'/api/quiz\');
       
       if (response.data.success) {
         setQuizzes(response.data.data);
@@ -94,14 +93,12 @@ const Quiz = () => {
     
     // Send quiz results to backend for analytics tracking
     try {
-      await axios.post(`${API_BASE_URL}/api/quiz/complete`, {
+      await axiosInstance.post(\'/api/quiz/complete\', {
         quizId: selectedQuiz._id,
         score: score,
         totalQuestions: selectedQuiz.questions.length,
         timeSpent: timeSpent,
         selectedAnswers: selectedAnswers
-      }, {
-        withCredentials: true
       });
       console.log('Quiz results recorded in analytics');
     } catch (error) {

@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setToken, setUser } from "../features/authSlice";
-import axios from "axios";
-import API_BASE_URL from "../config/api";
+import axiosInstance from "../axiosInstance";
 import './Auth.css';
 
 const Register = () => {
@@ -28,9 +27,7 @@ const Register = () => {
         password: password,
       };
       
-      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userDetails, {
-        withCredentials: true
-      });
+      const response = await axiosInstance.post('/api/auth/register', userDetails);
       
       if (response.data.success) {
         // Store token and user data in Redux for automatic login

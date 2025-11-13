@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../features/authSlice';
-import axios from 'axios';
-import API_BASE_URL from '../config/api';
+import axiosInstance from '../axiosInstance';
 import './Auth.css';
 
 const Login = () => {
@@ -26,9 +25,7 @@ const Login = () => {
         password: password,
       };
       
-      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, userDetails, {
-        withCredentials: true
-      });
+      const response = await axiosInstance.post('/api/auth/login', userDetails);
       
       if (response.data.success && response.data.token) {
         dispatch(setToken(response.data.token));

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectToken } from "../features/authSlice";
-import axios from "axios";
-import API_BASE_URL from "../config/api";
+import axiosInstance from "../axiosInstance";
 import "./Flashcards.css";
 
 const Flashcards = () => {
@@ -37,9 +36,7 @@ const Flashcards = () => {
   const fetchFlashcards = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/flashcard/my-flashcards`, {
-        withCredentials: true
-      });
+      const response = await axiosInstance.get(\'/api/flashcard/my-flashcards\');
       if (response.data.success) {
         setFlashcards(response.data.data);
       }
@@ -67,8 +64,7 @@ const Flashcards = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const uploadResponse = await axios.post(
-        `${API_BASE_URL}/api/pdf/getData`,
+      const uploadResponse = await axiosInstance.post(\'/api/pdf/getData\',
         formData,
         {
           headers: {
@@ -78,14 +74,10 @@ const Flashcards = () => {
       );
 
       if (uploadResponse.data.success) {
-        const flashcardResponse = await axios.post(
-          `${API_BASE_URL}/api/flashcard/generate`,
+        const flashcardResponse = await axiosInstance.post(\'/api/flashcard/generate\',
           {
             text: uploadResponse.data.data.text,
             title: `Flashcards from ${selectedFile.name}`
-          },
-          {
-            withCredentials: true
           }
         );
 
@@ -130,12 +122,10 @@ const Flashcards = () => {
     const timeSpent = Math.round((Date.now() - sessionStartTime) / 1000); // Time in seconds
     
     try {
-      await axios.post(`${API_BASE_URL}/api/flashcard/complete`, {
+      await axiosInstance.post(\'/api/flashcard/complete\', {
         flashcardSetId: currentSetId,
         cardsReviewed: cardsReviewedCount + 1, // Include current card
         timeSpent: timeSpent
-      }, {
-        withCredentials: true
       });
       console.log('Flashcard session recorded in analytics');
       

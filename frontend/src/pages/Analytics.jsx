@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser, selectToken } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import API_BASE_URL from '../config/api';
+import axiosInstance from "../axiosInstance";
 import './Analytics.css';
 
 const Analytics = () => {
@@ -25,9 +24,7 @@ const Analytics = () => {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/api/analytics/dashboard`, {
-        withCredentials: true
-      });
+      const response = await axiosInstance.get(\'/api/analytics/dashboard\');
       
       if (response.data.success) {
         setAnalyticsData(response.data.data);

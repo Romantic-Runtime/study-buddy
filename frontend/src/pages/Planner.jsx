@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUser, selectToken } from "../features/authSlice";
-import axios from "axios";
-import API_BASE_URL from "../config/api";
+import axiosInstance from "../axiosInstance";
 import "./Planner.css";
 
 const Planner = () => {
@@ -29,9 +28,7 @@ const Planner = () => {
   const fetchSchedule = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/planner/schedule`, {
-        withCredentials: true
-      });
+      const response = await axiosInstance.get(\'/api/planner/schedule\');
       if (response.data.success) {
         setSchedule(response.data.data);
       }
@@ -45,10 +42,8 @@ const Planner = () => {
   const handleAddTopic = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/planner/add-topic`,
-        newTopic,
-        { withCredentials: true }
+      const response = await axiosInstance.post(\'/api/planner/add-topic\',
+        newTopic
       );
       if (response.data.success) {
         setTopics([response.data.data, ...topics]);
@@ -70,10 +65,8 @@ const Planner = () => {
 
   const markAsComplete = async (topicId) => {
     try {
-      const response = await axios.patch(
-        `${API_BASE_URL}/api/planner/complete/${topicId}`,
-        {},
-        { withCredentials: true }
+      const response = await axiosInstance.patch(\'/api/planner/complete/${topicId}\',
+        {}
       );
       if (response.data.success) {
         fetchSchedule();
